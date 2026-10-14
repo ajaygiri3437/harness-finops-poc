@@ -20,8 +20,8 @@ resource "dynatrace_metric_events" "ec2_high_cpu" {
   }
 
 query_definition {
-    type        = "METRIC_SELECTOR"
-    aggregation = "AVG"
+    type = "METRIC_SELECTOR"
+
     metric_selector = <<-EOT
 cloud.aws.ec2.CPUUtilization.By.InstanceId:filter(eq("InstanceId","i-045b06c863af2ad92"))
 EOT
