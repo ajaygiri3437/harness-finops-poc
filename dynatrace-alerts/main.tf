@@ -19,10 +19,11 @@ resource "dynatrace_metric_events" "ec2_high_cpu" {
     alert_on_no_data   = false
   }
 
-  query_definition {
+query_definition {
     type        = "METRIC_SELECTOR"
     aggregation = "AVG"
-
-    metric_selector = "cloud.aws.ec2.CPUUtilization.By.InstanceId:filter(eq(\"InstanceId\",\"i-045b06c863af2ad92"\))"
+    metric_selector = <<-EOT
+cloud.aws.ec2.CPUUtilization.By.InstanceId:filter(eq("InstanceId","i-045b06c863af2ad92"))
+EOT
   }
 }
