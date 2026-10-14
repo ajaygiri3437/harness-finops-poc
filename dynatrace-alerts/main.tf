@@ -12,8 +12,8 @@ resource "dynatrace_davis_anomaly_detectors" "ec2_high_cpu" {
         key   = "query"
         value = <<-DQL
           timeseries avg = avg(cloud.aws.ec2.CPUUtilization.By.InstanceId),
-            by: {InstanceId, aws.account.id, aws.region},
-            filter: {eq(InstanceId, "i-045b06c863af2ad92")}
+            by: {InstanceId, aws.account.id, aws.region}
+          | filter InstanceId == "i-045b06c863af2ad92"
         DQL
       }
 
@@ -28,8 +28,8 @@ resource "dynatrace_davis_anomaly_detectors" "ec2_high_cpu" {
       }
 
       analyzer_input_field {
-        key   = "slidingWindow"
-        value = "5"
+        key   = "alertOnMissingData"
+        value = "false"
       }
 
       analyzer_input_field {
@@ -38,13 +38,13 @@ resource "dynatrace_davis_anomaly_detectors" "ec2_high_cpu" {
       }
 
       analyzer_input_field {
-        key   = "dealertingSamples"
+        key   = "slidingWindow"
         value = "5"
       }
 
       analyzer_input_field {
-        key   = "alertOnMissingData"
-        value = "false"
+        key   = "dealertingSamples"
+        value = "5"
       }
     }
   }
@@ -53,7 +53,7 @@ resource "dynatrace_davis_anomaly_detectors" "ec2_high_cpu" {
     properties {
       property {
         key   = "event.type"
-        value = "CUSTOM_ALERT"
+        value = "RESOURCE_CONTENTION_EVENT"
       }
 
       property {
@@ -63,12 +63,7 @@ resource "dynatrace_davis_anomaly_detectors" "ec2_high_cpu" {
 
       property {
         key   = "event.description"
-        value = "CPU utilization exceeded 80% for the selected EC2 instance."
-      }
-
-      property {
-        key   = "dt.source_entity"
-        value = "{dims:dt.smartscape_source.id}"
+        value = "CPU utilization exceeded 80% for EC2 instance i-045b06c863af2ad92."
       }
     }
   }
