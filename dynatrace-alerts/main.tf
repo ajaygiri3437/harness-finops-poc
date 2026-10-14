@@ -11,7 +11,7 @@ resource "dynatrace_davis_anomaly_detectors" "ec2_high_cpu" {
       analyzer_input_field {
         key   = "query"
         value = <<-DQL
-          timeseries cpu = avg(cloud.aws.ec2.CPUUtilization.By.InstanceId),
+          timeseries avg = avg(cloud.aws.ec2.CPUUtilization.By.InstanceId),
             by: {InstanceId, aws.account.id, aws.region},
             filter: {eq(InstanceId, "i-045b06c863af2ad92")}
         DQL
@@ -34,7 +34,7 @@ resource "dynatrace_davis_anomaly_detectors" "ec2_high_cpu" {
 
       analyzer_input_field {
         key   = "violatingSamples"
-        value = "5"
+        value = "3"
       }
 
       analyzer_input_field {
@@ -64,6 +64,11 @@ resource "dynatrace_davis_anomaly_detectors" "ec2_high_cpu" {
       property {
         key   = "event.description"
         value = "CPU utilization exceeded 80% for the selected EC2 instance."
+      }
+
+      property {
+        key   = "dt.source_entity"
+        value = "{dims:dt.smartscape_source.id}"
       }
     }
   }
